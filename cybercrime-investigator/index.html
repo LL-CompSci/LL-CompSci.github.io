@@ -1,0 +1,557 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cybercrime Investigator</title>
+
+  <style>
+
+#decisionChallenge {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #304463;
+}
+
+.decision-option {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.decision-option:disabled {
+  opacity: 0.8;
+  cursor: default;
+}
+
+#decisionFeedback {
+  margin-top: 18px;
+  padding: 16px;
+  background: #0e192d;
+  border-left: 4px solid #65d7ff;
+  border-radius: 6px;
+  line-height: 1.7;
+}
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1120;
+      color: #e5edf9;
+    }
+
+    header {
+      padding: 24px;
+      background: #111c32;
+      border-bottom: 1px solid #293b59;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      color: #65d7ff;
+    }
+
+    header p {
+      margin: 0;
+      color: #a8bad3;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .case-card {
+      padding: 28px;
+      background: #15223a;
+      border: 1px solid #304463;
+      border-radius: 14px;
+    }
+
+    .label {
+      color: #65d7ff;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    button {
+      padding: 13px 20px;
+      background: #1686bd;
+      color: white;
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #0874a8;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #a5e7ff;
+      outline-offset: 3px;
+    }
+
+    #investigation {
+      margin-top: 24px;
+      line-height: 1.7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+.evidence-room {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.evidence {
+  background: #1e3150;
+  border: 1px solid #466184;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.evidence:hover {
+  background: #29466d;
+}
+
+#evidenceDetails {
+  margin-top: 20px;
+  padding: 18px;
+  border-left: 4px solid #65d7ff;
+  background: #0e192d;
+  border-radius: 6px;
+  line-height: 1.7;
+
+#finalReport {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #304463;
+}
+
+#finalReport label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+#finalReport textarea,
+#finalReport select {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid #405574;
+  border-radius: 6px;
+  background: #0e192d;
+  color: #ffffff;
+  font: inherit;
+}
+
+#reportFeedback {
+  margin-top: 18px;
+  padding: 16px;
+  background: #0e192d;
+  border-left: 4px solid #65d7ff;
+  border-radius: 6px;
+  line-height: 1.7;
+}
+
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>⌕ CYBERCRIME INVESTIGATOR</h1>
+    <p>Digital Forensics Division | Training Case Files</p>
+  </header>
+
+  <main>
+    <section class="case-card">
+      <p class="label">CASE 001 / CONFIDENTIAL SIMULATION</p>
+
+      <h2>The Midnight Breach</h2>
+
+      <p>
+        At 11:48 PM, a school-related educational platform
+        recorded access to a restricted account. Student
+        records may have been copied.
+      </p>
+
+      <p>
+        Your mission is to examine the available evidence,
+        determine what it supports, and recommend a responsible
+        response.
+      </p>
+
+      <button id="beginButton">Begin Investigation →</button>
+
+     
+<section id="finalReport" class="hidden">
+  <h3>Final Investigation Report</h3>
+  <p>
+    Complete your report using the evidence you examined.
+    Support your conclusions with reasoning rather than assumptions.
+  </p>
+
+  <label for="incidentConclusion">1. What is your conclusion?</label>
+  <textarea id="incidentConclusion"
+    placeholder="Explain what the evidence suggests happened..."
+    rows="3"></textarea>
+
+  <label for="ethicalIssue">2. Which ethical concern is most relevant?</label>
+  <select id="ethicalIssue">
+    <option value="">Choose an ethical concern</option>
+    <option value="privacy">Protecting personal information</option>
+    <option value="evidence">Preserving digital evidence</option>
+    <option value="fairness">Avoiding unsupported accusations</option>
+    <option value="security">Preventing unauthorized access</option>
+  </select>
+
+  <label for="lawConnection">
+    3. How might a U.S. cybercrime law apply?
+  </label>
+  <textarea id="lawConnection"
+    placeholder="Explain how a law about unauthorized computer access might relate to this case..."
+    rows="3"></textarea>
+
+  <button id="submitReport">Submit Investigation Report</button>
+
+  <div id="reportFeedback" class="hidden" aria-live="polite"></div>
+</section>
+ 
+<div id="investigation" class="hidden" aria-live="polite">
+
+<section id="decisionChallenge" class="hidden">
+  <h3>Decision Challenge: Respond to the Breach</h3>
+
+  <p>
+    You have examined all three records, but you still do not
+    know who accessed the account. What should the security
+    team do next?
+  </p>
+
+  <div id="decisionOptions">
+    <button class="decision-option" data-choice="0">
+  A. Temporarily suspend the account and review its login history
+  before deciding whether to notify anyone.
+</button>
+
+<button class="decision-option" data-choice="1">
+  B. Notify the school's IT team and immediately send all
+  collected records to every potentially affected student.
+</button>
+
+<button class="decision-option" data-choice="2">
+  C. Preserve the logs, restrict suspicious access, and let
+  the authorized security team investigate before drawing conclusions.
+</button>
+
+<button class="decision-option" data-choice="3">
+  D. Contact the account owner first to ask whether the login
+  was legitimate, then decide whether further action is needed.
+</button>
+
+  <div id="decisionFeedback" class="hidden" aria-live="polite"></div>
+</section>
+
+  <h3>Initial Intelligence Report</h3>
+
+  <p>
+    Three fictional records have been preserved.
+    Select each record to investigate its contents.
+  </p>
+
+  <div class="evidence-room">
+    <button class="evidence" data-evidence="login">
+      📄 Evidence A: Login Record
+    </button>
+
+    <button class="evidence" data-evidence="alert">
+      🚨 Evidence B: Security Alert
+    </button>
+
+    <button class="evidence" data-evidence="policy">
+      🔒 Evidence C: Access Policy
+    </button>
+  </div>
+
+  <div id="evidenceDetails">
+    <p>Select an evidence file to examine it.</p>
+  </div>
+
+  <p id="evidenceProgress">Evidence examined: 0 / 3</p>.
+</div>
+
+        <h3>Initial Intelligence Report</h3>
+
+        <p>
+          The platform's security team has preserved three
+          fictional records for review:
+        </p>
+
+        <ul>
+          <li>A login record from 11:48 PM.</li>
+          <li>A system alert about unusual account activity.</li>
+          <li>A company policy describing account permissions.</li>
+        </ul>
+
+        <p>
+          <strong>Investigator's rule:</strong> A suspicious
+          login is a clue, not proof of a person's identity
+          or intent.
+        </p>
+
+        <p>Your next task will be to examine each record.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const beginButton = document.getElementById("beginButton");
+    const investigation = document.getElementById("investigation");
+
+    beginButton.addEventListener("click", function () {
+      investigation.classList.remove("hidden");
+      beginButton.disabled = true;
+      beginButton.textContent = "Investigation Started";
+
+const evidenceFiles = {
+  login: {
+    title: "Evidence A — Login Record",
+    details:
+      "The fictional system records a login at 11:48 PM " +
+      "from an unfamiliar network. This establishes that " +
+      "a login occurred, but it does not prove who used " +
+      "the account or whether the access was authorized."
+  },
+
+  alert: {
+    title: "Evidence B — Security Alert",
+    details:
+      "The security system flagged an unusual access " +
+      "pattern. This is a reason to investigate further, " +
+      "not proof that a crime occurred. Investigators " +
+      "should preserve relevant logs and verify the alert."
+  },
+
+  policy: {
+    title: "Evidence C — Access Policy",
+    details:
+      "The fictional company policy says student records " +
+      "are restricted to authorized personnel. Investigators " +
+      "should compare the recorded access with the person's " +
+      "permissions before drawing conclusions."
+  }
+};
+
+const evidenceButtons = document.querySelectorAll(".evidence");
+const evidenceDetails = document.getElementById("evidenceDetails");
+const evidenceProgress = document.getElementById("evidenceProgress");
+
+const examined = new Set();
+
+evidenceButtons.forEach(function(button) {
+  button.addEventListener("click", function() {
+    const evidenceId = button.dataset.evidence;
+    const file = evidenceFiles[evidenceId];
+
+    evidenceDetails.replaceChildren();
+
+    const heading = document.createElement("h4");
+    heading.textContent = file.title;
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = file.details;
+
+    evidenceDetails.append(heading, paragraph);
+
+    examined.add(evidenceId);
+    button.textContent = "✓ " + file.title;
+    evidenceProgress.textContent =
+      "Evidence examined: " + examined.size + " / 3";
+      if (examined.size === 3) {
+  document.getElementById("decisionChallenge")
+    .classList.remove("hidden");
+}
+  });
+});
+
+    });
+
+const decisionButtons =
+  document.querySelectorAll(".decision-option");
+
+const decisionFeedback =
+  document.getElementById("decisionFeedback");
+  let attemptsLeft = 2;
+
+const finalReport = document.getElementById("finalReport");
+decisionButtons.forEach(function(button) {
+  button.addEventListener("click", function() {
+    const choice = Number(button.dataset.choice);
+
+    // Prevent the same attempt from being counted twice.
+    if (button.disabled) {
+      return;
+    }
+
+    attemptsLeft--;
+
+    if (choice === 2) {
+      decisionFeedback.classList.remove("hidden");
+      decisionFeedback.innerHTML =
+        "<h4>Investigation Progress</h4>" +
+        "<p>You selected a response that preserves evidence, " +
+        "limits suspicious access, and allows an authorized " +
+        "team to investigate fairly.</p>" +
+        "<p>Attempts used: " + (2 - attemptsLeft) + " / 2</p>";
+    finalReport.classList.remove("hidden");
+      decisionButtons.forEach(function(option) {
+        option.disabled = true;
+      });
+
+    } else if (attemptsLeft > 0) {
+      button.disabled = true;
+      decisionFeedback.classList.remove("hidden");
+      decisionFeedback.innerHTML =
+        "<h4>Not quite. Review the evidence.</h4>" +
+        "<p>Consider whether your choice protects private " +
+        "information, preserves useful evidence, and addresses " +
+        "the possible unauthorized access.</p>" +
+        "<p>Attempts remaining: " + attemptsLeft + "</p>";
+
+} else {
+  decisionFeedback.classList.remove("hidden");
+  decisionFeedback.innerHTML =
+    "<h4>Investigation Review</h4>" +
+    "<p><strong>Correct answer: C.</strong> Preserve the logs, " +
+    "restrict suspicious access, and let the authorized " +
+    "security team investigate before drawing conclusions.</p>" +
+    "<p>This response helps contain the possible breach, " +
+    "preserves evidence, protects private information, " +
+    "and avoids accusing someone without sufficient evidence.</p>" +
+    "<p>Attempts used: 2 / 2</p>";
+finalReport.classList.remove("hidden");
+  decisionButtons.forEach(function(option) {
+    option.disabled = true;
+  });
+}
+  });
+});
+
+const submitReport = document.getElementById("submitReport");
+const reportFeedback = document.getElementById("reportFeedback");
+
+submitReport.addEventListener("click", function() {
+  const conclusion =
+    document.getElementById("incidentConclusion").value.trim();
+  const ethicalIssue =
+    document.getElementById("ethicalIssue").value;
+  const lawConnection =
+    document.getElementById("lawConnection").value.trim();
+
+  if (!conclusion || !ethicalIssue || !lawConnection) {
+    reportFeedback.classList.remove("hidden");
+    reportFeedback.textContent =
+      "Please complete all three sections before submitting.";
+    return;
+  }
+
+  const issueNames = {
+    privacy: "Protecting personal information",
+    evidence: "Preserving digital evidence",
+    fairness: "Avoiding unsupported accusations",
+    security: "Preventing unauthorized access"
+  };
+
+  reportFeedback.classList.remove("hidden");
+  reportFeedback.replaceChildren();
+
+  const heading = document.createElement("h4");
+  heading.textContent = "Investigation Report Submitted";
+
+  const conclusionText = document.createElement("p");
+  conclusionText.textContent = "Conclusion: " + conclusion;
+
+  const ethicsText = document.createElement("p");
+  ethicsText.textContent =
+    "Ethical concern: " + issueNames[ethicalIssue];
+
+  const lawText = document.createElement("p");
+  lawText.textContent = "Law connection: " + lawConnection;
+
+  reportFeedback.append(
+    heading,
+    conclusionText,
+    ethicsText,
+    lawText
+  );
+
+  submitReport.disabled = true;
+  submitReport.textContent = "Report Submitted";
+});
+
+  </script>
+
+<section id="sources" class="evidence-room">
+  <h2>Sources &amp; Legal Framework</h2>
+
+  <h3>1. Computer Fraud and Abuse Act (CFAA)</h3>
+  <p>
+    <strong>Jurisdiction:</strong> United States federal law.
+  </p>
+  <p>
+    The CFAA, codified at 18 U.S.C. § 1030, addresses certain
+    types of unauthorized computer access and related conduct.
+    In this fictional case, investigators would need to examine
+    the evidence before deciding whether any law was violated.
+    A suspicious login alone does not prove a crime occurred.
+  </p>
+  <p>
+<a href="https://uscode.house.gov/us/usc/t18/s1030/"
+   target="_blank" rel="noopener noreferrer">
+  Read the official U.S. Code, Section 1030
+</a>
+
+  </p>
+
+  <h3>2. NIST Cybersecurity Incident Response Guidance</h3>
+  <p>
+    The National Institute of Standards and Technology (NIST)
+    publishes guidance on preparing for, responding to, and
+    recovering from cybersecurity incidents. This supports the
+    case's emphasis on preserving evidence and responding
+    systematically.
+  </p>
+  <p>
+    <a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final"
+       target="_blank" rel="noopener noreferrer">
+      Read NIST SP 800-61 Revision 3
+    </a>
+  </p>
+
+  <h3>Ethical Principles</h3>
+  <ul>
+    <li>Protect confidential information.</li>
+    <li>Preserve evidence for a fair investigation.</li>
+    <li>Avoid accusations without sufficient evidence.</li>
+    <li>Limit access to authorized personnel.</li>
+  </ul>
+</section>
+</body>
+</html>
