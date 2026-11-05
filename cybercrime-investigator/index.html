@@ -4,554 +4,1322 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cybercrime Investigator</title>
+  <title>Cybercrime Investigator | The Midnight Breach</title>
 
   <style>
+    :root {
+      --background: #07111f;
+      --panel: #101f33;
+      --panel-light: #172b43;
+      --accent: #38bdf8;
+      --accent-dark: #087eae;
+      --text: #e5edf7;
+      --muted: #a6b5c8;
+      --success: #4ade80;
+      --warning: #fbbf24;
+      --danger: #fb7185;
+      --border: #29415c;
+    }
 
-#decisionChallenge {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid #304463;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-.decision-option {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  text-align: left;
-  line-height: 1.6;
-}
-
-.decision-option:disabled {
-  opacity: 0.8;
-  cursor: default;
-}
-
-#decisionFeedback {
-  margin-top: 18px;
-  padding: 16px;
-  background: #0e192d;
-  border-left: 4px solid #65d7ff;
-  border-radius: 6px;
-  line-height: 1.7;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1120;
-      color: #e5edf9;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
     }
 
     header {
-      padding: 24px;
-      background: #111c32;
-      border-bottom: 1px solid #293b59;
+      padding: 45px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #102a46, #07111f);
+      border-bottom: 1px solid var(--border);
     }
 
     header h1 {
-      margin: 0 0 8px;
-      color: #65d7ff;
+      margin: 0;
+      color: var(--accent);
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: 1px;
     }
 
     header p {
-      margin: 0;
-      color: #a8bad3;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      padding: 13px;
+      background: #0b192a;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover {
+      color: var(--accent);
     }
 
     main {
-      max-width: 800px;
-      margin: 50px auto;
-      padding: 0 20px;
+      width: min(1050px, 92%);
+      margin: 35px auto;
     }
 
-    .case-card {
-      padding: 28px;
-      background: #15223a;
-      border: 1px solid #304463;
+    section {
+      margin-bottom: 35px;
+      padding: 27px;
+      background: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 14px;
     }
 
-    .label {
-      color: #65d7ff;
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 2px;
+    h2 {
+      margin-top: 0;
+      color: var(--accent);
     }
 
-    button {
-      padding: 13px 20px;
-      background: #1686bd;
-      color: white;
-      border: 0;
+    h3 {
+      color: #c7eaff;
+    }
+
+    p {
+      color: var(--text);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .case-banner {
+      padding: 20px;
+      margin: 20px 0;
+      background: #172b43;
+      border-left: 4px solid var(--accent);
       border-radius: 7px;
+    }
+
+    .case-banner strong {
+      color: var(--warning);
+    }
+
+    .button {
+      display: inline-block;
+      padding: 11px 19px;
+      margin: 7px 5px 7px 0;
+      border: none;
+      border-radius: 7px;
+      background: var(--accent);
+      color: #06111e;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 16px;
+      transition: 0.2s;
     }
 
-    button:hover {
-      background: #0874a8;
+    .button:hover {
+      background: #7dd3fc;
+      transform: translateY(-1px);
     }
 
-    button:focus-visible {
-      outline: 3px solid #a5e7ff;
-      outline-offset: 3px;
+    .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    #investigation {
-      margin-top: 24px;
+    .button.secondary {
+      background: #29415c;
+      color: var(--text);
+    }
+
+    .button.secondary:hover {
+      background: #3a5877;
+    }
+
+    .button.danger {
+      background: #9f3348;
+      color: white;
+    }
+
+    .progress-area {
+      margin: 20px 0;
+    }
+
+    .progress-track {
+      height: 12px;
+      overflow: hidden;
+      background: #26394e;
+      border-radius: 20px;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 17px;
+      margin-top: 20px;
+    }
+
+    .evidence-card {
+      padding: 20px;
+      background: var(--panel-light);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .evidence-card h3 {
+      margin-top: 0;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 9px;
+      margin-bottom: 10px;
+      border-radius: 20px;
+      background: #26394e;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .status.complete {
+      background: #12452d;
+      color: var(--success);
+    }
+
+    .record-content {
+      margin-top: 20px;
+      padding: 20px;
+      background: #091725;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .record-content pre {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      color: #b9e7ff;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
       line-height: 1.7;
     }
 
-    .hidden {
-      display: none;
+    .question-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--panel-light);
+      border-radius: 10px;
     }
 
-.evidence-room {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin: 20px 0;
-}
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: bold;
+      color: #d5eaff;
+    }
 
-.evidence {
-  background: #1e3150;
-  border: 1px solid #466184;
-  text-align: left;
-  line-height: 1.5;
-}
+    textarea,
+    input[type="text"] {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 7px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #091725;
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+    }
 
-.evidence:hover {
-  background: #29466d;
-}
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
 
-#evidenceDetails {
-  margin-top: 20px;
-  padding: 18px;
-  border-left: 4px solid #65d7ff;
-  background: #0e192d;
-  border-radius: 6px;
-  line-height: 1.7;
+    textarea:focus,
+    input:focus {
+      outline: 2px solid var(--accent);
+    }
 
-#finalReport {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #304463;
-}
+    .feedback {
+      display: none;
+      margin-top: 18px;
+      padding: 17px;
+      border-radius: 8px;
+      background: #142d42;
+      border-left: 4px solid var(--accent);
+    }
 
-#finalReport label {
-  display: block;
-  margin-top: 18px;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
+    .feedback.show {
+      display: block;
+    }
 
-#finalReport textarea,
-#finalReport select {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 12px;
-  border: 1px solid #405574;
-  border-radius: 6px;
-  background: #0e192d;
-  color: #ffffff;
-  font: inherit;
-}
+    .feedback.success {
+      border-left-color: var(--success);
+    }
 
-#reportFeedback {
-  margin-top: 18px;
-  padding: 16px;
-  background: #0e192d;
-  border-left: 4px solid #65d7ff;
-  border-radius: 6px;
-  line-height: 1.7;
-}
+    .feedback.warning {
+      border-left-color: var(--warning);
+    }
 
-}
+    .decision-option {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 16px;
+      text-align: left;
+      background: var(--panel-light);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
 
+    .decision-option:hover {
+      border-color: var(--accent);
+      background: #203b58;
+    }
+
+    .decision-option.selected {
+      border: 2px solid var(--accent);
+      background: #1b3b56;
+    }
+
+    .decision-option:disabled {
+      cursor: default;
+      opacity: 0.75;
+    }
+
+    .report-output {
+      display: none;
+      margin-top: 22px;
+      padding: 20px;
+      background: #091725;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+    }
+
+    .report-output.show {
+      display: block;
+    }
+
+    .report-output h3 {
+      color: var(--success);
+    }
+
+    .report-answer {
+      padding: 12px;
+      margin: 12px 0;
+      background: var(--panel-light);
+      border-radius: 7px;
+    }
+
+    .report-answer strong {
+      color: var(--accent);
+    }
+
+    .source-list li {
+      margin: 12px 0;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      section {
+        padding: 18px;
+      }
+
+      nav {
+        gap: 12px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>⌕ CYBERCRIME INVESTIGATOR</h1>
-    <p>Digital Forensics Division | Training Case Files</p>
-  </header>
 
-  <main>
-    <section class="case-card">
-      <p class="label">CASE 001 / CONFIDENTIAL SIMULATION</p>
+<header>
+  <h1>CYBERCRIME INVESTIGATOR</h1>
+  <p>Digital Evidence. Ethical Decisions. Legal Responsibility.</p>
+</header>
 
-      <h2>The Midnight Breach</h2>
+<nav>
+  <a href="#briefing">Case Briefing</a>
+  <a href="#evidence">Evidence Room</a>
+  <a href="#decision">Decision Challenge</a>
+  <a href="#report">Final Report</a>
+  <a href="#sources">Sources</a>
+</nav>
 
+<main>
+
+  <section id="briefing">
+    <h2>Case File: The Midnight Breach</h2>
+
+    <p>
+      Welcome, Investigator. You have been assigned a cybersecurity
+      incident involving a fictional organization called Northstar
+      Technologies.
+    </p>
+
+    <div class="case-banner">
+      <strong>INCIDENT ALERT — 12:47 AM</strong>
       <p>
-        At 11:48 PM, a school-related educational platform
-        recorded access to a restricted account. Student
-        records may have been copied.
+        Northstar Technologies detected unusual activity involving
+        an employee account. Several failed login attempts were
+        followed by a successful login outside normal business hours.
+        The security team is concerned that someone may have accessed
+        information without authorization.
       </p>
+    </div>
 
-      <p>
-        Your mission is to examine the available evidence,
-        determine what it supports, and recommend a responsible
-        response.
-      </p>
+    <h3>Your Mission</h3>
 
-      <button id="beginButton">Begin Investigation →</button>
+    <p>
+      Examine three evidence records, interpret what each record
+      reveals, identify what information is still missing, and
+      recommend an appropriate response.
+    </p>
 
-     
-<section id="finalReport" class="hidden">
-  <h3>Final Investigation Report</h3>
-  <p>
-    Complete your report using the evidence you examined.
-    Support your conclusions with reasoning rather than assumptions.
-  </p>
+    <p>
+      Remember: evidence does not automatically prove who committed
+      an incident or why it happened. A responsible investigator
+      distinguishes confirmed facts from assumptions.
+    </p>
 
-  <label for="incidentConclusion">1. What is your conclusion?</label>
-  <textarea id="incidentConclusion"
-    placeholder="Explain what the evidence suggests happened..."
-    rows="3"></textarea>
-
-  <label for="ethicalIssue">2. Which ethical concern is most relevant?</label>
-  <select id="ethicalIssue">
-    <option value="">Choose an ethical concern</option>
-    <option value="privacy">Protecting personal information</option>
-    <option value="evidence">Preserving digital evidence</option>
-    <option value="fairness">Avoiding unsupported accusations</option>
-    <option value="security">Preventing unauthorized access</option>
-  </select>
-
-  <label for="lawConnection">
-    3. How might a U.S. cybercrime law apply?
-  </label>
-  <textarea id="lawConnection"
-    placeholder="Explain how a law about unauthorized computer access might relate to this case..."
-    rows="3"></textarea>
-
-  <button id="submitReport">Submit Investigation Report</button>
-
-  <div id="reportFeedback" class="hidden" aria-live="polite"></div>
-</section>
- 
-<div id="investigation" class="hidden" aria-live="polite">
-
-<section id="decisionChallenge" class="hidden">
-  <h3>Decision Challenge: Respond to the Breach</h3>
-
-  <p>
-    You have examined all three records, but you still do not
-    know who accessed the account. What should the security
-    team do next?
-  </p>
-
-  <div id="decisionOptions">
-    <button class="decision-option" data-choice="0">
-  A. Temporarily suspend the account and review its login history
-  before deciding whether to notify anyone.
-</button>
-
-<button class="decision-option" data-choice="1">
-  B. Notify the school's IT team and immediately send all
-  collected records to every potentially affected student.
-</button>
-
-<button class="decision-option" data-choice="2">
-  C. Preserve the logs, restrict suspicious access, and let
-  the authorized security team investigate before drawing conclusions.
-</button>
-
-<button class="decision-option" data-choice="3">
-  D. Contact the account owner first to ask whether the login
-  was legitimate, then decide whether further action is needed.
-</button>
-
-  <div id="decisionFeedback" class="hidden" aria-live="polite"></div>
-</section>
-
-  <h3>Initial Intelligence Report</h3>
-
-  <p>
-    Three fictional records have been preserved.
-    Select each record to investigate its contents.
-  </p>
-
-  <div class="evidence-room">
-    <button class="evidence" data-evidence="login">
-      📄 Evidence A: Login Record
+    <button class="button" id="beginButton">
+      Begin Investigation
     </button>
+  </section>
 
-    <button class="evidence" data-evidence="alert">
-      🚨 Evidence B: Security Alert
-    </button>
 
-    <button class="evidence" data-evidence="policy">
-      🔒 Evidence C: Access Policy
-    </button>
-  </div>
+  <section id="evidence">
+    <h2>Evidence Room</h2>
 
-  <div id="evidenceDetails">
-    <p>Select an evidence file to examine it.</p>
-  </div>
+    <p>
+      Select each record to examine it. After reviewing a record,
+      answer the interpretation questions before receiving its
+      explanation.
+    </p>
 
-  <p id="evidenceProgress">Evidence examined: 0 / 3</p>.
-</div>
-
-        <h3>Initial Intelligence Report</h3>
-
-        <p>
-          The platform's security team has preserved three
-          fictional records for review:
-        </p>
-
-        <ul>
-          <li>A login record from 11:48 PM.</li>
-          <li>A system alert about unusual account activity.</li>
-          <li>A company policy describing account permissions.</li>
-        </ul>
-
-        <p>
-          <strong>Investigator's rule:</strong> A suspicious
-          login is a clue, not proof of a person's identity
-          or intent.
-        </p>
-
-        <p>Your next task will be to examine each record.</p>
+    <div class="progress-area">
+      <div class="progress-label">
+        <span>Investigation Progress</span>
+        <span id="progressText">0 / 3 Records Interpreted</span>
       </div>
-    </section>
-  </main>
 
-  <script>
-    const beginButton = document.getElementById("beginButton");
-    const investigation = document.getElementById("investigation");
+      <div
+        class="progress-track"
+        role="progressbar"
+        aria-label="Evidence interpretation progress"
+        aria-valuemin="0"
+        aria-valuemax="3"
+        aria-valuenow="0"
+        id="progressBar"
+      >
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
 
-    beginButton.addEventListener("click", function () {
-      investigation.classList.remove("hidden");
-      beginButton.disabled = true;
-      beginButton.textContent = "Investigation Started";
+    <div class="evidence-grid">
 
-const evidenceFiles = {
-  login: {
-    title: "Evidence A — Login Record",
-    details:
-      "The fictional system records a login at 11:48 PM " +
-      "from an unfamiliar network. This establishes that " +
-      "a login occurred, but it does not prove who used " +
-      "the account or whether the access was authorized."
-  },
+      <div class="evidence-card">
+        <span class="status" id="status-login">Not Examined</span>
+        <h3>Record 01: Login Records</h3>
+        <p>
+          A record of login attempts associated with the employee
+          account.
+        </p>
+        <button
+          class="button"
+          onclick="openEvidence('login')"
+        >
+          Open Record
+        </button>
+      </div>
 
-  alert: {
-    title: "Evidence B — Security Alert",
-    details:
-      "The security system flagged an unusual access " +
-      "pattern. This is a reason to investigate further, " +
-      "not proof that a crime occurred. Investigators " +
-      "should preserve relevant logs and verify the alert."
-  },
+      <div class="evidence-card">
+        <span class="status" id="status-alert">Not Examined</span>
+        <h3>Record 02: Security Alert</h3>
+        <p>
+          An automated alert generated after unusual account activity.
+        </p>
+        <button
+          class="button"
+          onclick="openEvidence('alert')"
+        >
+          Open Record
+        </button>
+      </div>
 
-  policy: {
-    title: "Evidence C — Access Policy",
-    details:
-      "The fictional company policy says student records " +
-      "are restricted to authorized personnel. Investigators " +
-      "should compare the recorded access with the person's " +
-      "permissions before drawing conclusions."
-  }
-};
+      <div class="evidence-card">
+        <span class="status" id="status-policy">Not Examined</span>
+        <h3>Record 03: Access Policy</h3>
+        <p>
+          Northstar's internal rules regarding employee account access.
+        </p>
+        <button
+          class="button"
+          onclick="openEvidence('policy')"
+        >
+          Open Record
+        </button>
+      </div>
 
-const evidenceButtons = document.querySelectorAll(".evidence");
-const evidenceDetails = document.getElementById("evidenceDetails");
-const evidenceProgress = document.getElementById("evidenceProgress");
+    </div>
 
-const examined = new Set();
+    <div id="recordViewer" class="record-content hidden">
+      <h3 id="recordTitle">Evidence Record</h3>
+      <pre id="recordText"></pre>
 
-evidenceButtons.forEach(function(button) {
-  button.addEventListener("click", function() {
-    const evidenceId = button.dataset.evidence;
-    const file = evidenceFiles[evidenceId];
+      <div class="question-box">
+        <h3>Investigative Interpretation</h3>
 
-    evidenceDetails.replaceChildren();
+        <p>
+          Before reading the investigator's explanation, use the
+          evidence to answer both questions.
+        </p>
 
-    const heading = document.createElement("h4");
-    heading.textContent = file.title;
+        <form id="interpretationForm">
 
-    const paragraph = document.createElement("p");
-    paragraph.textContent = file.details;
+          <label for="interpretation">
+            1. What does this evidence tell you?
+          </label>
 
-    evidenceDetails.append(heading, paragraph);
+          <textarea
+            id="interpretation"
+            placeholder="Explain what you think the record reveals..."
+            required
+          ></textarea>
 
-    examined.add(evidenceId);
-    button.textContent = "✓ " + file.title;
-    evidenceProgress.textContent =
-      "Evidence examined: " + examined.size + " / 3";
-      if (examined.size === 3) {
-  document.getElementById("decisionChallenge")
-    .classList.remove("hidden");
-}
-  });
-});
+          <label for="unknown">
+            2. What do you still NOT know?
+          </label>
 
+          <textarea
+            id="unknown"
+            placeholder="Identify missing information or questions that remain..."
+            required
+          ></textarea>
+
+          <button class="button" type="submit">
+            Submit Interpretation
+          </button>
+
+        </form>
+
+        <div id="interpretationFeedback" class="feedback"
+          aria-live="polite">
+        </div>
+      </div>
+    </div>
+
+    <div id="evidenceComplete" class="feedback success"
+      aria-live="polite">
+      <strong>Evidence Review Complete!</strong>
+      <p>
+        You have interpreted all three records. You can now move
+        to the decision challenge.
+      </p>
+      <button class="button" id="goToDecision">
+        Continue to Decision Challenge
+      </button>
+    </div>
+
+  </section>
+
+
+  <section id="decision">
+    <h2>Decision Challenge</h2>
+
+    <p>
+      You are now the lead investigator. Based on the evidence,
+      choose how Northstar Technologies should initially respond.
+    </p>
+
+    <div class="case-banner">
+      <strong>DECISION REQUIRED</strong>
+      <p>
+        The account has shown unusual activity. The security team
+        needs to respond while protecting information, preserving
+        relevant evidence, and respecting the employee's rights.
+      </p>
+    </div>
+
+    <div id="decisionLocked" class="feedback warning">
+      <strong>Evidence Review Required</strong>
+      <p>
+        Interpret all three evidence records before making your
+        final investigative decision.
+      </p>
+    </div>
+
+    <div id="decisionArea" class="hidden">
+
+      <h3>What should the investigation team do?</h3>
+
+      <p class="muted">
+        Select one response. You have two attempts to identify
+        the strongest initial response.
+      </p>
+
+      <button
+        class="decision-option"
+        data-choice="ignore"
+        onclick="selectDecision('ignore', this)"
+      >
+        A. Ignore the activity because the employee may have
+        simply forgotten their password.
+      </button>
+
+      <button
+        class="decision-option"
+        data-choice="delete"
+        onclick="selectDecision('delete', this)"
+      >
+        B. Immediately delete the employee's account and all
+        associated records.
+      </button>
+
+      <button
+        class="decision-option"
+        data-choice="suspend"
+        onclick="selectDecision('suspend', this)"
+      >
+        C. Temporarily suspend the account, preserve relevant
+        evidence, and review its history.
+      </button>
+
+      <p id="attemptText" class="muted">Attempts used: 0 / 2</p>
+
+      <button class="button" id="submitDecision">
+        Submit Decision
+      </button>
+
+      <div id="decisionFeedback" class="feedback"
+        aria-live="polite">
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="report">
+    <h2>Final Investigation Report</h2>
+
+    <p>
+      Complete your investigation report. Your responses from the
+      evidence room and decision challenge will be included.
+    </p>
+
+    <form id="reportForm">
+
+      <label for="investigatorName">
+        Investigator Name
+      </label>
+
+      <input
+        type="text"
+        id="investigatorName"
+        placeholder="Enter your name"
+        required
+      >
+
+      <label for="finalConclusion">
+        What is your overall conclusion?
+      </label>
+
+      <textarea
+        id="finalConclusion"
+        placeholder="Summarize what the evidence suggests..."
+        required
+      ></textarea>
+
+      <label for="ethicalResponsibility">
+        What ethical responsibility does the organization have?
+      </label>
+
+      <textarea
+        id="ethicalResponsibility"
+        placeholder="Explain how the organization should protect users and information..."
+        required
+      ></textarea>
+
+      <label for="legalResponsibility">
+        What legal considerations should investigators consider?
+      </label>
+
+      <textarea
+        id="legalResponsibility"
+        placeholder="Explain the relevant legal responsibilities..."
+        required
+      ></textarea>
+
+      <button class="button" type="submit">
+        Submit Final Report
+      </button>
+
+    </form>
+
+    <div id="reportOutput" class="report-output"
+      aria-live="polite">
+    </div>
+
+  </section>
+
+  <section id="sources">
+    <h2>Sources and Further Reading</h2>
+
+    <p>
+      The following resources provide information about cybersecurity
+      law, incident response, and responsible digital investigations.
+    </p>
+
+    <ul class="source-list">
+      <li>
+        <strong>Computer Fraud and Abuse Act (CFAA)</strong><br>
+        United States Code, Title 18, Section 1030.<br>
+        <a
+          href="https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title18-section1030"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read the Computer Fraud and Abuse Act
+        </a>
+      </li>
+
+      <li>
+        <strong>NIST Special Publication 800-61 Revision 3</strong><br>
+        Incident Response Recommendations and Considerations
+        for Cybersecurity Risk Management.<br>
+        <a
+          href="https://csrc.nist.gov/pubs/sp/800/61/r3/final"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read NIST SP 800-61 Revision 3
+        </a>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <p>Cybercrime Investigator | The Midnight Breach</p>
+  <p>Educational cybersecurity simulation. All case records are fictional.</p>
+</footer>
+
+<script>
+
+  const evidence = {
+    login: {
+      title: "Record 01: Login Records",
+
+      text:
+`NORTHSTAR TECHNOLOGIES
+ACCOUNT LOGIN HISTORY
+
+Account: employee_042
+Date: October 14
+
+11:58 PM — Failed login attempt
+12:01 AM — Failed login attempt
+12:04 AM — Failed login attempt
+12:09 AM — Successful login
+12:11 AM — Account accessed
+
+Security Note:
+The successful login occurred outside the employee's
+usual working hours.
+
+END OF RECORD`,
+
+      explanation:
+        "The login history shows several failed attempts followed by a successful login outside normal working hours. This is unusual activity that deserves investigation. However, the record alone does not prove that an unauthorized person accessed the account. We still need to determine who was using the account and whether the employee's credentials were compromised.",
+
+      unknown:
+        "The login record does not identify the person behind the keyboard. It also does not establish whether the employee was working late, whether someone else used the credentials, or whether the login was authorized."
+    },
+
+    alert: {
+      title: "Record 02: Security Alert",
+
+      text:
+`NORTHSTAR TECHNOLOGIES
+AUTOMATED SECURITY ALERT
+
+Alert ID: SEC-2048
+Time: 12:12 AM
+
+Event:
+Unusual account activity detected.
+
+Account:
+employee_042
+
+Severity:
+Medium
+
+Reason:
+Account activity occurred outside the user's
+normal login pattern.
+
+System Recommendation:
+Security team review required.
+
+END OF RECORD`,
+
+      explanation:
+        "The automated system identified activity that did not match the account's normal pattern. This suggests the account may have been compromised or used in an unusual way. The alert is a warning that further investigation is needed, not proof that a cybercrime occurred.",
+
+      unknown:
+        "The alert does not explain exactly what happened after the account was accessed. It does not confirm whether information was viewed, copied, changed, or removed."
+    },
+
+    policy: {
+      title: "Record 03: Access Policy",
+
+      text:
+`NORTHSTAR TECHNOLOGIES
+EMPLOYEE ACCOUNT ACCESS POLICY
+
+1. Employees must use their own assigned accounts.
+
+2. Passwords and login credentials must not be shared.
+
+3. Employees must report suspicious account activity.
+
+4. Access to company information must be limited
+   to authorized business purposes.
+
+5. Security incidents must be reported to the
+   organization's security team.
+
+6. Relevant security records should be preserved
+   during an investigation.
+
+END OF RECORD`,
+
+      explanation:
+        "The access policy establishes the organization's expectations for account security and responsible information access. Sharing credentials or accessing information without authorization may violate company policy and could raise legal concerns depending on the circumstances.",
+
+      unknown:
+        "The policy does not tell us whether an employee violated it. We still need to establish who accessed the account, what actions occurred, whether access was authorized, and whether any information was affected."
+    }
+  };
+
+  const interpretedEvidence = new Set();
+
+  let currentEvidence = null;
+  let currentAnswers = {};
+  let selectedDecision = null;
+  let decisionAttempts = 0;
+  let decisionCompleted = false;
+
+  const evidenceKeys = ["login", "alert", "policy"];
+
+  document.getElementById("beginButton").addEventListener(
+    "click",
+    function () {
+      document.getElementById("evidence").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  );
+
+  function openEvidence(key) {
+    currentEvidence = key;
+
+    const record = evidence[key];
+
+    document.getElementById("recordTitle").textContent =
+      record.title;
+
+    document.getElementById("recordText").textContent =
+      record.text;
+
+    const feedback =
+      document.getElementById("interpretationFeedback");
+
+    feedback.className = "feedback";
+    feedback.innerHTML = "";
+
+    const form = document.getElementById("interpretationForm");
+
+    form.reset();
+
+    if (interpretedEvidence.has(key)) {
+      document.getElementById("interpretation").value =
+        currentAnswers[key].interpretation;
+
+      document.getElementById("unknown").value =
+        currentAnswers[key].unknown;
+
+      showEvidenceFeedback(key);
+    }
+
+    document.getElementById("recordViewer").classList.remove("hidden");
+
+    document.getElementById("recordViewer").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
+  }
 
-const decisionButtons =
-  document.querySelectorAll(".decision-option");
+  document.getElementById("interpretationForm").addEventListener(
+    "submit",
+    function (event) {
+      event.preventDefault();
 
-const decisionFeedback =
-  document.getElementById("decisionFeedback");
-  let attemptsLeft = 2;
+      if (!currentEvidence) {
+        return;
+      }
 
-const finalReport = document.getElementById("finalReport");
-decisionButtons.forEach(function(button) {
-  button.addEventListener("click", function() {
-    const choice = Number(button.dataset.choice);
+      const interpretation =
+        document.getElementById("interpretation").value.trim();
 
-    // Prevent the same attempt from being counted twice.
-    if (button.disabled) {
+      const unknown =
+        document.getElementById("unknown").value.trim();
+
+      if (!interpretation || !unknown) {
+        return;
+      }
+
+      currentAnswers[currentEvidence] = {
+        interpretation: interpretation,
+        unknown: unknown
+      };
+
+      interpretedEvidence.add(currentEvidence);
+
+      updateEvidenceProgress();
+      showEvidenceFeedback(currentEvidence);
+
+      if (interpretedEvidence.size === 3) {
+        document.getElementById("evidenceComplete")
+          .classList.add("show");
+      }
+    }
+  );
+
+  function showEvidenceFeedback(key) {
+    const record = evidence[key];
+
+    const feedback =
+      document.getElementById("interpretationFeedback");
+
+    feedback.className = "feedback show success";
+
+    feedback.innerHTML = `
+      <h3>Investigator's Explanation</h3>
+
+      <p><strong>What the evidence suggests:</strong></p>
+      <p>${record.explanation}</p>
+
+      <p><strong>What remains unknown:</strong></p>
+      <p>${record.unknown}</p>
+
+      <p class="muted">
+        Your interpretation has been saved. You may revisit
+        this record and revise your answers.
+      </p>
+    `;
+
+    document.getElementById("status-" + key).textContent =
+      "Interpreted";
+
+    document.getElementById("status-" + key)
+      .classList.add("complete");
+  }
+
+  function updateEvidenceProgress() {
+    const completed = interpretedEvidence.size;
+    const percentage = (completed / 3) * 100;
+
+    document.getElementById("progressText").textContent =
+      completed + " / 3 Records Interpreted";
+
+    document.getElementById("progressFill").style.width =
+      percentage + "%";
+
+    document.getElementById("progressBar").setAttribute(
+      "aria-valuenow",
+      completed
+    );
+  }
+
+  document.getElementById("goToDecision").addEventListener(
+    "click",
+    function () {
+      document.getElementById("decisionLocked")
+        .classList.add("hidden");
+
+      document.getElementById("decisionArea")
+        .classList.remove("hidden");
+
+      document.getElementById("decision").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  );
+
+  function selectDecision(choice, button) {
+    if (decisionCompleted) {
       return;
     }
 
-    attemptsLeft--;
+    selectedDecision = choice;
 
-    if (choice === 2) {
-      decisionFeedback.classList.remove("hidden");
-      decisionFeedback.innerHTML =
-        "<h4>Investigation Progress</h4>" +
-        "<p>You selected a response that preserves evidence, " +
-        "limits suspicious access, and allows an authorized " +
-        "team to investigate fairly.</p>" +
-        "<p>Attempts used: " + (2 - attemptsLeft) + " / 2</p>";
-    finalReport.classList.remove("hidden");
-      decisionButtons.forEach(function(option) {
-        option.disabled = true;
-      });
+    document.querySelectorAll(".decision-option").forEach(
+      function (option) {
+        option.classList.remove("selected");
+      }
+    );
 
-    } else if (attemptsLeft > 0) {
-      button.disabled = true;
-      decisionFeedback.classList.remove("hidden");
-      decisionFeedback.innerHTML =
-        "<h4>Not quite. Review the evidence.</h4>" +
-        "<p>Consider whether your choice protects private " +
-        "information, preserves useful evidence, and addresses " +
-        "the possible unauthorized access.</p>" +
-        "<p>Attempts remaining: " + attemptsLeft + "</p>";
-
-} else {
-  decisionFeedback.classList.remove("hidden");
-  decisionFeedback.innerHTML =
-    "<h4>Investigation Review</h4>" +
-    "<p><strong>Correct answer: C.</strong> Preserve the logs, " +
-    "restrict suspicious access, and let the authorized " +
-    "security team investigate before drawing conclusions.</p>" +
-    "<p>This response helps contain the possible breach, " +
-    "preserves evidence, protects private information, " +
-    "and avoids accusing someone without sufficient evidence.</p>" +
-    "<p>Attempts used: 2 / 2</p>";
-finalReport.classList.remove("hidden");
-  decisionButtons.forEach(function(option) {
-    option.disabled = true;
-  });
-}
-  });
-});
-
-const submitReport = document.getElementById("submitReport");
-const reportFeedback = document.getElementById("reportFeedback");
-
-submitReport.addEventListener("click", function() {
-  const conclusion =
-    document.getElementById("incidentConclusion").value.trim();
-  const ethicalIssue =
-    document.getElementById("ethicalIssue").value;
-  const lawConnection =
-    document.getElementById("lawConnection").value.trim();
-
-  if (!conclusion || !ethicalIssue || !lawConnection) {
-    reportFeedback.classList.remove("hidden");
-    reportFeedback.textContent =
-      "Please complete all three sections before submitting.";
-    return;
+    button.classList.add("selected");
   }
 
-  const issueNames = {
-    privacy: "Protecting personal information",
-    evidence: "Preserving digital evidence",
-    fairness: "Avoiding unsupported accusations",
-    security: "Preventing unauthorized access"
-  };
+  document.getElementById("submitDecision").addEventListener(
+    "click",
+    function () {
+      if (decisionCompleted) {
+        return;
+      }
 
-  reportFeedback.classList.remove("hidden");
-  reportFeedback.replaceChildren();
+      const feedback =
+        document.getElementById("decisionFeedback");
 
-  const heading = document.createElement("h4");
-  heading.textContent = "Investigation Report Submitted";
+      if (!selectedDecision) {
+        feedback.className = "feedback show warning";
+        feedback.textContent =
+          "Please select a response before submitting.";
+        return;
+      }
 
-  const conclusionText = document.createElement("p");
-  conclusionText.textContent = "Conclusion: " + conclusion;
+      decisionAttempts++;
 
-  const ethicsText = document.createElement("p");
-  ethicsText.textContent =
-    "Ethical concern: " + issueNames[ethicalIssue];
+      document.getElementById("attemptText").textContent =
+        "Attempts used: " + decisionAttempts + " / 2";
 
-  const lawText = document.createElement("p");
-  lawText.textContent = "Law connection: " + lawConnection;
+      if (selectedDecision === "suspend") {
+        decisionCompleted = true;
 
-  reportFeedback.append(
-    heading,
-    conclusionText,
-    ethicsText,
-    lawText
+        feedback.className = "feedback show success";
+
+        feedback.innerHTML = `
+          <h3>Strong Investigative Decision</h3>
+
+          <p>
+            Temporarily suspending the account is a reasonable
+            initial response because it can help prevent further
+            unauthorized activity while the security team
+            investigates.
+          </p>
+
+          <p>
+            Preserving relevant evidence and reviewing the
+            account's history can help investigators understand
+            what happened without immediately destroying
+            potentially important information.
+          </p>
+
+          <p>
+            <strong>Ethical consideration:</strong>
+            The organization should protect its systems while
+            respecting the employee's privacy and avoiding
+            unsupported accusations.
+          </p>
+
+          <p>
+            <strong>Legal consideration:</strong>
+            Investigators should follow applicable laws,
+            organizational policies, and proper procedures
+            when accessing and reviewing account information.
+          </p>
+
+          <p>
+            You have completed the decision challenge.
+            Continue to the final investigation report.
+          </p>
+        `;
+
+        document.querySelectorAll(".decision-option").forEach(
+          function (option) {
+            option.disabled = true;
+          }
+        );
+
+        document.getElementById("submitDecision").disabled = true;
+
+      } else if (selectedDecision === "ignore") {
+
+        feedback.className = "feedback show warning";
+
+        feedback.innerHTML = `
+          <h3>Consider the Consequences</h3>
+
+          <p>
+            Ignoring the activity could allow a possible security
+            incident to continue. Even if the employee simply
+            forgot their password, the unusual login pattern
+            deserves investigation.
+          </p>
+
+          <p>
+            <strong>Ethical issue:</strong>
+            The organization has a responsibility to protect
+            its systems and the information entrusted to it.
+          </p>
+
+          <p>
+            <strong>Investigative issue:</strong>
+            The evidence has not yet established whether the
+            activity was authorized. Investigators should
+            verify the facts instead of assuming nothing happened.
+          </p>
+
+          ${decisionAttempts >= 2
+            ? "<p><strong>Answer revealed:</strong> Option C is the strongest initial response.</p>"
+            : "<p>You have one attempt remaining. Reconsider the evidence.</p>"
+          }
+        `;
+
+        if (decisionAttempts >= 2) {
+          revealCorrectDecision();
+        }
+
+      } else if (selectedDecision === "delete") {
+
+        feedback.className = "feedback show warning";
+
+        feedback.innerHTML = `
+          <h3>Consider the Consequences</h3>
+
+          <p>
+            Immediately deleting the account and all associated
+            records could destroy information needed to understand
+            the incident.
+          </p>
+
+          <p>
+            <strong>Ethical issue:</strong>
+            Investigators should avoid unnecessary destruction
+            of information and should make decisions based on
+            verified evidence.
+          </p>
+
+          <p>
+            <strong>Investigative issue:</strong>
+            Deleting records could make it harder to determine
+            what happened, who accessed the account, and whether
+            information was affected.
+          </p>
+
+          ${decisionAttempts >= 2
+            ? "<p><strong>Answer revealed:</strong> Option C is the strongest initial response.</p>"
+            : "<p>You have one attempt remaining. Reconsider the evidence.</p>"
+          }
+        `;
+
+        if (decisionAttempts >= 2) {
+          revealCorrectDecision();
+        }
+      }
+    }
   );
 
-  submitReport.disabled = true;
-  submitReport.textContent = "Report Submitted";
-});
+  function revealCorrectDecision() {
+    decisionCompleted = true;
 
-  </script>
+    document.querySelectorAll(".decision-option").forEach(
+      function (option) {
+        option.disabled = true;
+      }
+    );
 
-<section id="sources" class="evidence-room">
-  <h2>Sources &amp; Legal Framework</h2>
+    document.getElementById("submitDecision").disabled = true;
 
-  <h3>1. Computer Fraud and Abuse Act (CFAA)</h3>
-  <p>
-    <strong>Jurisdiction:</strong> United States federal law.
-  </p>
-  <p>
-    The CFAA, codified at 18 U.S.C. § 1030, addresses certain
-    types of unauthorized computer access and related conduct.
-    In this fictional case, investigators would need to examine
-    the evidence before deciding whether any law was violated.
-    A suspicious login alone does not prove a crime occurred.
-  </p>
-  <p>
-<a href="https://uscode.house.gov/us/usc/t18/s1030/"
-   target="_blank" rel="noopener noreferrer">
-  Read the official U.S. Code, Section 1030
-</a>
+    const feedback =
+      document.getElementById("decisionFeedback");
 
-  </p>
+    feedback.innerHTML += `
+      <p>
+        The strongest initial response is to temporarily suspend
+        the account, preserve relevant evidence, and review its
+        history. This helps protect the system while allowing
+        an evidence-based investigation to continue.
+      </p>
+    `;
+  }
 
-  <h3>2. NIST Cybersecurity Incident Response Guidance</h3>
-  <p>
-    The National Institute of Standards and Technology (NIST)
-    publishes guidance on preparing for, responding to, and
-    recovering from cybersecurity incidents. This supports the
-    case's emphasis on preserving evidence and responding
-    systematically.
-  </p>
-  <p>
-    <a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final"
-       target="_blank" rel="noopener noreferrer">
-      Read NIST SP 800-61 Revision 3
-    </a>
-  </p>
+  document.getElementById("reportForm").addEventListener(
+    "submit",
+    function (event) {
+      event.preventDefault();
 
-  <h3>Ethical Principles</h3>
-  <ul>
-    <li>Protect confidential information.</li>
-    <li>Preserve evidence for a fair investigation.</li>
-    <li>Avoid accusations without sufficient evidence.</li>
-    <li>Limit access to authorized personnel.</li>
-  </ul>
-</section>
+      if (interpretedEvidence.size !== 3) {
+        alert("Please interpret all three evidence records first.");
+        return;
+      }
+
+      if (!decisionCompleted) {
+        alert("Please complete the decision challenge first.");
+        return;
+      }
+
+      const name =
+        document.getElementById("investigatorName").value.trim();
+
+      const conclusion =
+        document.getElementById("finalConclusion").value.trim();
+
+      const ethical =
+        document.getElementById("ethicalResponsibility").value.trim();
+
+      const legal =
+        document.getElementById("legalResponsibility").value.trim();
+
+      if (!name || !conclusion || !ethical || !legal) {
+        return;
+      }
+
+      const report = document.getElementById("reportOutput");
+
+      let evidenceReport = "";
+
+      evidenceKeys.forEach(function (key, index) {
+        const record = evidence[key];
+        const answer = currentAnswers[key];
+
+        evidenceReport += `
+          <div class="report-answer">
+            <strong>${index + 1}. ${record.title}</strong>
+
+            <p><strong>What the evidence suggests:</strong></p>
+            <p>${escapeHTML(answer.interpretation)}</p>
+
+            <p><strong>What remains unknown:</strong></p>
+            <p>${escapeHTML(answer.unknown)}</p>
+          </div>
+        `;
+      });
+
+      const decisionText =
+        "Temporarily suspend the account, preserve relevant evidence, and review its history.";
+
+      report.innerHTML = `
+        <h3>Investigation Report Submitted</h3>
+
+        <p>
+          <strong>Investigator:</strong>
+          ${escapeHTML(name)}
+        </p>
+
+        <p><strong>Evidence Interpretations</strong></p>
+
+        ${evidenceReport}
+
+        <div class="report-answer">
+          <strong>Final Decision</strong>
+          <p>${decisionText}</p>
+        </div>
+
+        <div class="report-answer">
+          <strong>Overall Conclusion</strong>
+          <p>${escapeHTML(conclusion)}</p>
+        </div>
+
+        <div class="report-answer">
+          <strong>Ethical Responsibilities</strong>
+          <p>${escapeHTML(ethical)}</p>
+        </div>
+
+        <div class="report-answer">
+          <strong>Legal Considerations</strong>
+          <p>${escapeHTML(legal)}</p>
+        </div>
+
+        <p class="muted">
+          This report is displayed for educational purposes.
+          It is not automatically saved to a server.
+        </p>
+
+        <button class="button" onclick="window.print()">
+          Print Investigation Report
+        </button>
+      `;
+
+      report.classList.add("show");
+
+      report.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  );
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, function (character) {
+      const replacements = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      };
+
+      return replacements[character];
+    });
+  }
+
+</script>
+
 </body>
 </html>
